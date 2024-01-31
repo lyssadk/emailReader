@@ -38,6 +38,16 @@ def main():
     results = service.users().labels().list(userId="me").execute()
     labels = results.get("labels", [])
 
+    message = service.users().messages().list(userId="me").execute()
+    messages = message.get("messages", [])
+
+    if not messages:
+      print("No messages found.")
+      return
+    print("Messages:")  
+    for message in messages:
+      print(message["id"])
+
     if not labels:
       print("No labels found.")
       return
