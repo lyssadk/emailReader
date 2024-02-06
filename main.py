@@ -1,4 +1,5 @@
 import os.path
+import re
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -37,35 +38,49 @@ def main():
   try:
     # Call the Gmail API
     service = build("gmail", "v1", credentials=creds)
-    results = service.users().labels().list(userId="me").execute()
-    labels = results.get("labels", [])
 
      # request a list of all the messages  
     result = service.users().messages().list(maxResults=2, userId='me').execute() 
     messages = result.get('messages') 
+    discounts = []
+    items = []
     for msg in messages: 
         # Get the message from its id 
         txt = service.users().messages().get(userId='me', id=msg['id']).execute() 
         payload = txt['payload']
         
-        parts = payload.get('parts')[0]
-        data = parts['body']['data']
+        parts = payload.get('parts')
+        if parts is not None:
+          data = parts[0]['body']['data']
+        else:
+          print("Parts is None")
+          continue
 
         data = data.replace("-","+").replace("_","/") 
         decoded_data = base64.b64decode(data) 
         soup = BeautifulSoup(decoded_data , "lxml") 
-        body = soup.body() 
-        print("Message: ", body) 
-        print('\n') 
-        # Use try-except to avoid any Errors 
+        body = str(soup.findAll('p'))
+        keyWord = "Order summary"
+        # res=str(body)[str(body).find(keyWord)+len(keyWord):]
+        orderSummary = body[str(body).find(keyWord)+len(keyWord):str(body).find("Customer information")]
+        print(orderSummary)
+        if orderSummary.find("Discount"):
+          discount = orderSummary[orderSummary.find("Discount")+len("Discount"):orderSummary.find("Subtotal")]
+          discounts.append(discount)
+          itemList = str(body)[str(body).find(keyWord)+len(keyWord):str(body).find("Discount")]
+          print(itemList)
+        else:
+          print("No discount")
+          itemList = str(body)[str(body).find(keyWord)+len(keyWord):str(body).find("Subtotal")]
+          print(itemList)
+        # if discount -> pull the discount and save it into a variable
+        # else - > go straight to subtotal
        
 
-    if not labels:
-      print("No labels found.")
-      return
-    print("Labels:")
-    for label in labels:
-      print(label["name"])
+
+        #\:1gv > div:nth-child(1) > div > div:nth-child(1) > div:nth-child(5) > table > tbody > tr > td > table:nth-child(3) > tbody > tr > td > center > table:nth-child(2) > tbody > tr > td > table:nth-child(1) > tbody > tr:nth-child(1) > td > table > tbody > tr > td:nth-child(2)
+          
+        # Use try-except to avoid any Errors 
 
   except HttpError as error:
     # TODO(developer) - Handle errors from gmail API.
