@@ -1,4 +1,7 @@
 credentials.json
 myenv
 .venv
+.env
 token.json
+
+# npm install dotenv, pip3 install pymongo
