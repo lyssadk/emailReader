@@ -20,8 +20,6 @@ Currently working on issues of parsing through the emails with reciepts that hav
 * email
 
 # Useful Websites
-
-{Make a list of websites that you found helpful in this project}
 * [SigParser Guide](https://sigparser.com/developers/email-parsing/gmail-api/)
 * [Gmail RESTful API documentation](https://developers.google.com/gmail/api/guides)
 * [Geek For Geeks guide](https://www.geeksforgeeks.org/how-to-read-emails-from-gmail-using-gmail-api-in-python/)
