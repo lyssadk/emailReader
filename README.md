@@ -9,7 +9,7 @@ Link to video demonstration coming soon!
 Currently working on issues of parsing through the emails with reciepts that have slightly different things (some have state taxes, discounts, etc) so i will need to finish those logic statements, then i should be able to get the data analysis desired.
 
 # Development Environment
-* pip3 -- i tried using pip with python3 and soon discovered that my computer didn't appreciate that:)
+* pip3
 * python3
 * Beautiful Soup
 * Gmail RESTful api
