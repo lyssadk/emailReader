@@ -10,7 +10,7 @@ import base64
 from bs4 import BeautifulSoup
 
 load_dotenv()
-
+# Scopes
 # If modifying these scopes, delete the file token.json.
 SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
 
